@@ -12,7 +12,8 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test"
+    "test": "ember test",
+    "deploy": "ember build -prod && scp -r ./dist/* root@demo.chrishenn.net:/var/www/html"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
