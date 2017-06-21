@@ -24,7 +24,6 @@ export default Ember.Component.extend({
 
   draw({ animate = true } = {}) {
     const data = this.get('data');
-    const applyTransform = this.get('applyTransform');
     const transform = this.get('transform');
     const width = this.$().width();
     const height = this.$().height();
@@ -45,14 +44,8 @@ export default Ember.Component.extend({
       dots = dots.transition().duration(TRANSITION_MS);
     }
 
-    if (applyTransform) {
-      dots
-        .attr('cx', d => Math.floor(transform([d.x, d.y])[0] * width))
-        .attr('cy', d => Math.floor(height - (transform([d.x, d.y])[1] * height)));
-    } else {
-      dots
-        .attr('cx', d => Math.floor(d.x * width))
-        .attr('cy', d => Math.floor(height - (d.y * height)));
-    }
+    dots
+      .attr('cx', d => Math.floor(transform(d).x * width))
+      .attr('cy', d => Math.floor(height - (transform(d).y * height)));
   },
 });

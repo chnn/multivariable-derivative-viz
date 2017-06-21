@@ -1,6 +1,11 @@
-<button {{action "toggleTransformed"}}>Transform</button>
-{{grid-plot
-    data=grid
-    transform=transform
-    applyTransform=isTransformed
-}}
+<div class="controls">
+  <div class="toggle-transform">
+    {{#each TRANSFORMS as |transform|}}
+      <label class="transform-option">
+        {{one-way-radio currentTransformKey option=transform.key update=(action (mut currentTransformKey))}}
+        {{transform-label transform=transform}}
+      </label>
+    {{/each}}
+  </div>
+</div>
+{{grid-plot data=grid transform=currentTransformFn}}

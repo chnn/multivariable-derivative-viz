@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { range } from 'd3-array';
 
+
 /**
   Flatten a two-dimensional array into a one-dimensional array.
 */
@@ -40,15 +41,31 @@ function buildGrid(ticks=10) {
 }
 
 export default Ember.Component.extend({
-  tagName: ['viz-layout'],
+  classNames: ['linear-map-viz'],
 
-  isTransformed: false,
+  TRANSFORMS: [
+    { key: 'identity', mtx: [[1, 0], [0, 1]] },
+    { key: 'scale-half', mtx: [[0.5, 0], [0, 0.5]] },
+    { key: 'scale-double', mtx: [[2, 0], [0, 2]] },
+  ],
+
+  currentTransformKey: 'identity',
+  
+  currentTransformFn: Ember.computed('currentTransformKey', function() {
+    const TRANSFORMS = this.get('TRANSFORMS');
+    const currentTransformKey = this.get('currentTransformKey');
+    const [[a, b], [c, d]] = TRANSFORMS.find(t => t.key === currentTransformKey).mtx;
+    const leftMultiplication = function({ x, y }) {
+      return { x: (a * x) + (c * y), y: (b * x) + (d * y) };
+    };
+
+    return leftMultiplication;
+  }),
 
   init() {
     this._super(...arguments);
 
     this.set('grid', buildGrid());
-    this.set('transform', ([x, y]) => [x, 2 * y]);
   },
 
   actions: {
