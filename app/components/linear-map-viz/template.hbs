@@ -3,7 +3,7 @@
     {{#each TRANSFORMS as |transform|}}
       <label class="transform-option">
         {{one-way-radio currentTransformKey option=transform.key update=(action (mut currentTransformKey))}}
-        {{transform-label transform=transform}}
+        {{latex-expression (mtx-to-tex transform.mtx)}}
       </label>
     {{/each}}
   </div>
