@@ -25,27 +25,53 @@ export default Ember.Component.extend({
   draw({ animate = true } = {}) {
     const data = this.get('data');
     const transform = this.get('transform');
-    const width = this.$().width();
-    const height = this.$().height();
+    const w = this.$().width();
+    const h = this.$().height();
 
-    let dots = select(this.element)
-      .selectAll('.grid-dot')
+    let positions = select(this.element)
+      .selectAll('.grid-position')
       .data(data, d => `(${d.x}, ${d.y})`);
 
-    dots.exit().remove();
+    positions.exit().remove();
 
-    dots = dots.enter()
-      .append('circle')
+    let newPositions = positions.enter()
+      .append('g')
+      .classed('grid-position', true);
+
+    newPositions.append('circle')
       .classed('grid-dot', true)
       .attr('r', 3)
-      .merge(dots)
+
+    positions = newPositions.merge(positions);
+
+    let dots = positions.selectAll('.grid-dot')
+
+    let lines = positions.selectAll('.grid-line')
+      .data(
+        d => d.adj.map(tail => { return { head: d, tail }; }),
+        d => `(${d.head.x}, ${d.head.y}) to (${d.tail.x}, ${d.tail.y})`
+      );
+
+    lines.exit().remove();
+
+    lines = lines.enter()
+      .append('line')
+      .classed('grid-line', true)
+      .merge(lines);
 
     if (animate) {
       dots = dots.transition().duration(TRANSITION_MS);
+      lines = lines.transition().duration(TRANSITION_MS);
     }
 
     dots
-      .attr('cx', d => Math.floor(transform(d).x * width))
-      .attr('cy', d => Math.floor(height - (transform(d).y * height)));
+      .attr('cx', d => transform(d).x * w)
+      .attr('cy', d => h - (transform(d).y * h));
+
+    lines
+      .attr('x1', d => transform(d.head).x * w)
+      .attr('y1', d => h - (transform(d.head).y * h))
+      .attr('x2', d => transform(d.tail).x * w)
+      .attr('y2', d => h - (transform(d.tail).y * h));
   },
 });

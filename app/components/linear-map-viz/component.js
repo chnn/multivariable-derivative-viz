@@ -30,10 +30,6 @@ function buildGrid(ticks=10) {
       if (entry.y < 1) {
         entry.adj.push(grid[i][j + 1]);
       }
-
-      if (entry.x < 1 && entry.y < 1) {
-        entry.adj.push(grid[i + 1][j + 1]);
-      }
     });
   });
 
@@ -47,6 +43,9 @@ export default Ember.Component.extend({
     { key: 'identity', mtx: [[1, 0], [0, 1]] },
     { key: 'scale-half', mtx: [[0.5, 0], [0, 0.5]] },
     { key: 'scale-double', mtx: [[2, 0], [0, 2]] },
+    { key: 'all-one-half', mtx: [[0.5, 0.5], [0.5, 0.5]] },
+    { key: 'squish', mtx: [[1, 0.5], [0.5, 1]] },
+    { key: 'flip', mtx: [[0, 1], [1, 0]] },
   ],
 
   currentTransformKey: 'identity',

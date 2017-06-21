@@ -6,6 +6,7 @@ html, body, body > .ember-view, .viz-container {
   height: 100%;
   width: 100%;
   font-family: sans-serif;
+  overflow: hidden;
 }
 
 body > .ember-view {
