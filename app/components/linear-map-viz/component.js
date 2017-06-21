@@ -65,11 +65,5 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     this.set('grid', buildGrid());
-  },
-
-  actions: {
-    toggleTransformed() {
-      this.toggleProperty('isTransformed');
-    }
   }
 });
