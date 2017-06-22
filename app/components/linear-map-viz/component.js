@@ -1,27 +1,55 @@
 import Ember from 'ember';
 
+const TRANSFORMS = [
+  { key: 0, fn: leftMult([[1, 0], [0, 1]]), tex: mtxToTex([[1, 0], [0, 1]]) },
+  { key: 2, fn: leftMult([[2, 0], [0, 2]]), tex: mtxToTex([[2, 0], [0, 2]]) },
+  { key: 3, fn: leftMult([[0.5, 0.5], [0.5, 0.5]]), tex: mtxToTex([[0.5, 0.5], [0.5, 0.5]]) },
+  { key: 4, fn: leftMult([[1, 0.5], [0.5, 1]]), tex: mtxToTex([[1, 0.5], [0.5, 1]]) },
+  { key: 5, fn: leftMult([[0, 1], [1, 0]]), tex: mtxToTex([[0, 1], [1, 0]]) },
+  {
+    key: 6,
+    fn: ({ x, y }) => {
+      return { x: x * x * x + (y / 2), y: y * y };
+    },
+    tex: 'f(x,y) = (x^3 + y/2,\\ y^2)'
+  },
+  {
+    key: 7,
+    fn: ({ x, y }) => {
+      return { x: x * x, y: y * y };
+    },
+    tex: 'f(x,y) = (x^2,\\ y^2)'
+  },
+  {
+    key: 8,
+    fn: ({ x, y }) => {
+      return { x: y * y, y: x * x };
+    },
+    tex: 'f(x,y) = (y^2,\\ x^2)'
+  },
+];
+
+function leftMult([[a, b], [c, d]]) {
+  return function({ x, y }) {
+      return { x: (a * x) + (c * y), y: (b * x) + (d * y) };
+  }
+}
+
+function mtxToTex([[a, b], [c, d]]) {
+  return `\\begin{pmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{pmatrix}`;
+}
+
 export default Ember.Component.extend({
   classNames: ['linear-map-viz'],
 
-  TRANSFORMS: [
-    { key: 'identity', mtx: [[1, 0], [0, 1]] },
-    { key: 'scale-half', mtx: [[0.5, 0], [0, 0.5]] },
-    { key: 'scale-double', mtx: [[2, 0], [0, 2]] },
-    { key: 'all-one-half', mtx: [[0.5, 0.5], [0.5, 0.5]] },
-    { key: 'squish', mtx: [[1, 0.5], [0.5, 1]] },
-    { key: 'flip', mtx: [[0, 1], [1, 0]] },
-  ],
+  TRANSFORMS,
 
-  currentTransformKey: 'identity',
+  currentTransformKey: TRANSFORMS[0].key,
   
   currentTransformFn: Ember.computed('currentTransformKey', function() {
-    const TRANSFORMS = this.get('TRANSFORMS');
     const currentTransformKey = this.get('currentTransformKey');
-    const [[a, b], [c, d]] = TRANSFORMS.find(t => t.key === currentTransformKey).mtx;
-    const leftMultiplication = function({ x, y }) {
-      return { x: (a * x) + (c * y), y: (b * x) + (d * y) };
-    };
+    const fn = TRANSFORMS.find(t => t.key === currentTransformKey).fn;
 
-    return leftMultiplication;
+    return fn;
   })
 });
