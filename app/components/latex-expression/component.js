@@ -1,21 +1,31 @@
 import Ember from 'ember';
 import katex from 'katex';
 
-const LaTexExpressionComponent = Ember.Component.extend({
+const LatexExpressionComponent = Ember.Component.extend({
   classNames: ['latex-expression'],
 
   expression: '',
   displayMode: true,
 
   didInsertElement() {
+    this.renderTex();
+  },
+
+  didReceiveAttrs() {
+    if (this.element) {
+      this.renderTex();
+    }
+  },
+
+  renderTex() {
     katex.render(this.get('expression'), this.element, {
       displayMode: this.get('displayMode')
     });
-  }
+  },
 });
 
-LaTexExpressionComponent.reopenClass({
+LatexExpressionComponent.reopenClass({
   positionalParams: ['expression']
 });
 
-export default LaTexExpressionComponent;
+export default LatexExpressionComponent;
