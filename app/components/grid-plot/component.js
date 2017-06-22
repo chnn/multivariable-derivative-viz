@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import { select } from 'd3-selection';
 import { transition } from 'd3-transition';  // eslint-disable-line
+import { scaleLinear } from 'd3-scale';
+import { line } from 'd3-shape';
+import { unitGridLines, unitGridPoints } from '../../utils/geometry';
 
 const TRANSITION_MS = 2000;
 
@@ -9,6 +12,13 @@ export default Ember.Component.extend({
   tagName: 'svg',
 
   data: null,
+
+  init() {
+    this._super(...arguments);
+
+    this.set('lines', unitGridLines());
+    this.set('points', unitGridPoints());
+  },
 
   didInsertElement() {
     this.draw({ animate: false });
@@ -23,55 +33,53 @@ export default Ember.Component.extend({
   },
 
   draw({ animate = true } = {}) {
-    const data = this.get('data');
+    const lineData = this.get('lines');
+    const pointData = this.get('points');
     const transform = this.get('transform');
     const w = this.$().width();
     const h = this.$().height();
+    const xScale = scaleLinear()
+      .domain([0, 1])
+      .range([0, w]);
+    const yScale = scaleLinear()
+      .domain([0, 1])
+      .range([h, 0]);
+    const pathGenerator = line()
+      .x(d => xScale(d.x))
+      .y(d => yScale(d.y));
 
-    let positions = select(this.element)
-      .selectAll('.grid-position')
-      .data(data, d => `(${d.x}, ${d.y})`);
-
-    positions.exit().remove();
-
-    let newPositions = positions.enter()
-      .append('g')
-      .classed('grid-position', true);
-
-    newPositions.append('circle')
-      .classed('grid-dot', true)
-      .attr('r', 3)
-
-    positions = newPositions.merge(positions);
-
-    let dots = positions.selectAll('.grid-dot')
-
-    let lines = positions.selectAll('.grid-line')
-      .data(
-        d => d.adj.map(tail => { return { head: d, tail }; }),
-        d => `(${d.head.x}, ${d.head.y}) to (${d.tail.x}, ${d.tail.y})`
-      );
+    let lines = select(this.element)
+      .selectAll('.grid-line')
+      .data(lineData, d => d.toString());
 
     lines.exit().remove();
 
     lines = lines.enter()
-      .append('line')
+      .append('path')
       .classed('grid-line', true)
       .merge(lines);
 
+    let points = select(this.element)
+      .selectAll('.grid-point')
+      .data(pointData, d => d.toString());
+
+    points.exit().remove();
+
+    points = points.enter()
+      .append('circle')
+      .classed('grid-point', true)
+      .attr('r', 3)
+      .merge(points);
+
     if (animate) {
-      dots = dots.transition().duration(TRANSITION_MS);
       lines = lines.transition().duration(TRANSITION_MS);
+      points = points.transition().duration(TRANSITION_MS);
     }
 
-    dots
-      .attr('cx', d => transform(d).x * w)
-      .attr('cy', d => h - (transform(d).y * h));
+    lines.attr('d', d => pathGenerator(d.discretize().map(transform)))
 
-    lines
-      .attr('x1', d => transform(d.head).x * w)
-      .attr('y1', d => h - (transform(d.head).y * h))
-      .attr('x2', d => transform(d.tail).x * w)
-      .attr('y2', d => h - (transform(d.tail).y * h));
+    points
+      .attr('cx', d => xScale(transform(d).x))
+      .attr('cy', d => yScale(transform(d).y));
   },
 });
