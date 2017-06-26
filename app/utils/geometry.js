@@ -1,4 +1,4 @@
-import { range, merge } from 'd3-array';
+import { range } from 'd3-array';
 
 export class Point {
   constructor(x, y) {
@@ -27,7 +27,7 @@ export class Line {
   }
 
   discretize(resolution=100) {
-    const points = stepsForResolution(resolution).map(t => this.valueAt(t));
+    const points = steps([0, 1], resolution).map(t => this.valueAt(t));
 
     return points;
   }
@@ -37,25 +37,19 @@ export class Line {
   }
 }
 
-export function unitGridLines(resolution=10) {
-  const steps = stepsForResolution(resolution);
-  const xLines = steps.map(x => new Line(new Point(x, 0), new Point(x, 1)));
-  const yLines = steps.map(y => new Line(new Point(0, y), new Point(1, y)));
+export function gridLines({ xExtent=[0, 1], yExtent=[0, 1], resolution=10 }={}) {
+  const [x0, x1] = xExtent;
+  const [y0, y1] = yExtent;
+  const xLines = steps(xExtent, resolution).map(x => new Line(new Point(x, y0), new Point(x, y1)));
+  const yLines = steps(yExtent, resolution).map(y => new Line(new Point(x0, y), new Point(x1, y)));
   const lines = xLines.concat(yLines);
 
   return lines;
 }
 
-export function unitGridPoints(resolution=10) {
-  const steps = stepsForResolution(resolution);
-  const points = merge(steps.map(i => steps.map(j => new Point(i, j))));
-
-  return points;
-}
-
-function stepsForResolution(resolution) {
-  const stepSize = 1 / resolution;
-  const steps = range(0, 1 + stepSize, stepSize);
+function steps(extent, resolution) {
+  const stepSize = (extent[1] - extent[0]) / resolution;
+  const steps = range(extent[0], extent[1] + stepSize, stepSize);
 
   return steps;
 }

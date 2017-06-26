@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { gridLines } from '../../utils/geometry';
 
 const TRANSFORMS = [
   { key: 0, fn: leftMult([[1, 0], [0, 1]]), tex: mtxToTex([[1, 0], [0, 1]]) },
@@ -51,5 +52,11 @@ export default Ember.Component.extend({
     const fn = TRANSFORMS.find(t => t.key === currentTransformKey).fn;
 
     return fn;
-  })
+  }),
+
+  init() {
+    this._super(...arguments);
+
+    this.set('gridLines', gridLines());
+  },
 });
