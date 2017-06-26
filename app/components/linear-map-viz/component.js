@@ -28,6 +28,13 @@ const TRANSFORMS = [
     },
     tex: 'f(x,y) = (y^2,\\ x^2)'
   },
+  {
+    key: 9,
+    fn: ({ x, y }) => {
+      return { x: (x * x * x) + (y * y * y), y: (x * x * x) - y };
+    },
+    tex: '(x^3 + y^3,\\ x^3 - y)',
+  },
 ];
 
 function leftMult([[a, b], [c, d]]) {
@@ -58,7 +65,7 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    this.set('gridLines', gridLines());
+    this.set('gridLines', gridLines({ xExtent: [-2, 2], yExtent: [-2, 2] }));
   },
 
   actions: {

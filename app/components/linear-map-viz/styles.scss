@@ -1,6 +1,9 @@
 & {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .controls-toggle {
@@ -32,8 +35,9 @@
 }
 
 .lines-plot {
-  width: 100%;
-  height: 100%;
+  width: 30%;
+  height: 30%;
+  overflow: visible;
 }
 
 .transform-option {
