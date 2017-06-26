@@ -46,6 +46,7 @@ export default Ember.Component.extend({
   TRANSFORMS,
 
   currentTransformKey: TRANSFORMS[0].key,
+  controlsOpen: false,
   
   currentTransformFn: Ember.computed('currentTransformKey', function() {
     const currentTransformKey = this.get('currentTransformKey');
@@ -59,4 +60,10 @@ export default Ember.Component.extend({
 
     this.set('gridLines', gridLines());
   },
+
+  actions: {
+    toggleControlsOpen() {
+      this.toggleProperty('controlsOpen');
+    }
+  }
 });

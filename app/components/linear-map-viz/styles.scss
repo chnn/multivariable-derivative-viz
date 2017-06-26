@@ -3,6 +3,23 @@
   height: 100%;
 }
 
+.controls-toggle {
+  user-select: none;
+  cursor: pointer;
+  color: #2980b9;
+  font-weight: bold;
+  font-size: 14px;
+
+  &:hover {
+    color: #3498db;
+  }
+
+  .fa {
+    padding-right: 3px;
+  }
+
+}
+
 .controls {
   position: absolute;
   left: 20px;

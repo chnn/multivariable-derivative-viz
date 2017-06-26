@@ -1,11 +1,16 @@
 <div class="controls">
-  <div class="toggle-transform">
-    {{#each TRANSFORMS as |transform|}}
-      <label class="transform-option">
-        {{one-way-radio currentTransformKey option=transform.key update=(action (mut currentTransformKey))}}
-        {{latex-expression transform.tex}}
-      </label>
-    {{/each}}
+  <div class="controls-toggle {{if controlsOpen 'open'}}" {{action "toggleControlsOpen"}}>
+    {{fa-icon 'window-maximize'}} Settings
   </div>
+  {{#if controlsOpen}}
+    <div class="toggle-transform">
+      {{#each TRANSFORMS as |transform|}}
+        <label class="transform-option">
+          {{one-way-radio currentTransformKey option=transform.key update=(action (mut currentTransformKey))}}
+          {{latex-expression transform.tex}}
+        </label>
+      {{/each}}
+    </div>
+  {{/if}}
 </div>
 {{grid-plot lines=gridLines transform=currentTransformFn}}
