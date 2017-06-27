@@ -77,8 +77,8 @@ export function mtxToTex([[a, b], [c, d]]) {
 export function h(f, a, df) {
   const h = function({ x, y }) {
     return {
-      x: f(a).x + leftMult(df)({ x: x - a.x, y: y - a.y }).x,
-      y: f(a).y + leftMult(df)({ x: x - a.x, y: y - a.y }).y
+      x: f(a).x + leftMult(df(a))({ x: x - a.x, y: y - a.y }).x,
+      y: f(a).y + leftMult(df(a))({ x: x - a.x, y: y - a.y }).y
     };
   };
 

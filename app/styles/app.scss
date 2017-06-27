@@ -1,3 +1,4 @@
+@import "ember-power-select";
 @import "pod-styles";
 
 html, body, body > .ember-view, .viz-container {
@@ -14,3 +15,27 @@ body > .ember-view {
   justify-content: center;
   align-items: center;
 }
+
+.button {
+  background: $belize-hole;
+  color: white;
+  font-weight: bold;
+  border-style: none;
+  padding: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
+
+  &:hover {
+    background: $peter-river;
+  }
+}
+
+// Since ember-power-select uses ember-wormhole to render a dropdown list,
+// styles applied to such a list cannot be encapsulated within a component
+.selectable-transform {
+  padding: 15px;
+  user-select: none;
+  cursor: pointer;
+}
+

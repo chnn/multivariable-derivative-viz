@@ -66,6 +66,7 @@ export default Ember.Component.extend({
   draw({ animate = true } = {}) {
     const lineData = this.get('lines');
     const markedPoint = this.get('markedPoint');
+    const pointsData = markedPoint ? [markedPoint] : [];
     const transform = this.get('transform');
     const xScale = this.get('xScale');
     const yScale = this.get('yScale');
@@ -84,7 +85,7 @@ export default Ember.Component.extend({
 
     let points = select(this.element)
       .selectAll('.grid-point')
-      .data([markedPoint], d => d.toString());
+      .data(pointsData, d => d.toString());
 
     points.exit().remove();
     

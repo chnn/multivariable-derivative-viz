@@ -3,38 +3,68 @@ $peter-river: #3498db;
 $belize-hole: #2980b9;
 $carrot: #e67e22;
 $clouds: #ecf0f1;
+$silver: #bdc3c7;
+$concrete: #95a5a6;
 
 & {
   width: 100%;
   height: 100%;
 }
 
+.toggle-transform {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
 .controls-toggle {
-  user-select: none;
+  position: absolute;
+  right: 20px;
+  top: 25px;
   cursor: pointer;
-  color: $peter-river;
+  color: $silver;
   font-weight: bold;
   font-size: 14px;
+  display: flex;
+  align-items: center;
 
   &:hover {
-    color: $belize-hole;
+    color: $concrete;
   }
 
   .fa {
-    padding-right: 3px;
+    padding-right: 6px;
   }
-
 }
 
 .controls {
   position: absolute;
-  left: 20px;
-  top: 20px;
-  // padding: 20px 25px;
-  // background: white;
-  // border: 1px solid lightgray;
-  // box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
-  // border-radius: 3px;
+  right: 20px;
+  top: 65px;
+  padding: 20px 25px 30px 25px;
+  background: white;
+  border: 1px solid lightgray;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+
+  h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .ember-power-select-trigger {
+    line-height: 1;
+    width: 240px;
+    height: 100px;
+  }
+
+  .ember-power-select-selected-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
 }
 
 .grid-plot {
@@ -48,8 +78,8 @@ $clouds: #ecf0f1;
 }
 
 .grid-plot.derivative {
-  margin-left: 3px;
-  margin-top: 3px;
+  margin-left: 2px;
+  margin-top: 2px;
 
   .grid-line {
     stroke: $carrot;
@@ -57,42 +87,5 @@ $clouds: #ecf0f1;
 
   .grid-point {
     fill: $carrot;
-  }
-}
-
-// .transform-option {
-//   font-size: 14px;
-//   display: block;
-//   margin-bottom: 5px;
-
-//   .latex-expression {
-//     display: block;
-//   }
-
-//   input[type="radio"] {
-//     margin-right: 15px;
-//   }
-// }
-
-.latex-expression {
-  margin-bottom: 20px;
-}
-
-.latex-expression.derivative {
-  color: $carrot;
-}
-
-.btn {
-  background: $belize-hole;
-  color: white;
-  font-weight: bold;
-  border-style: none;
-  padding: 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
-
-  &:hover {
-    background: $peter-river;
   }
 }

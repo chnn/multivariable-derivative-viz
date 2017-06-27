@@ -1,45 +1,31 @@
 import Ember from 'ember';
-import { Point, gridLines, leftMult, h } from '../../utils/math';
-
-const f = ({ x, y }) => {
-  return { x: ((x * x * x) + (y * y * y)) / 4, y: ((x * x * x) / 3) - y };
-};
-const a = new Point(1, 1); 
-const derivative = [[3 / 4, 3 / 4], [1, -1]]
-
-const TRANSFORMS = [
-  {
-    key: 0,
-    fn: leftMult([[1, 0], [0, 1]]),
-    derivativeFn: leftMult([[1, 0], [0, 1]]),
-    derivativePoint: a
-  },
-  {
-    key: 9,
-    fn: f,
-    derivativeFn: h(f, a, derivative),
-    derivativePoint: a
-
-  }
-];
+import { Point, gridLines, h } from '../../utils/math';
+import TRANSFORMS from '../../utils/transforms';
 
 export default Ember.Component.extend({
   classNames: ['linear-map-viz'],
 
-  IDENTITY: TRANSFORMS[0],
-  TRANSFORM: TRANSFORMS[1],
-
   isTransformed: false,
-  controlsOpen: true,
+  controlsOpen: false,
+  identity: x => x,
+  markedPoint: new Point(1, 1),
+  availableTransforms: TRANSFORMS,
+  selectedTransform: TRANSFORMS[0],
 
-  // currentTransformKey: TRANSFORMS[0].key,
-  
-  // currentTransform: Ember.computed('currentTransformKey', function() {
-  //   const currentTransformKey = this.get('currentTransformKey');
-  //   const transform = TRANSFORMS.find(t => t.key === currentTransformKey);
+  linearApproxFn: Ember.computed('selectedTransform', 'markedPoint', function() {
+    const { fn, derivativeFn } = this.get('selectedTransform');
+    const markedPoint = this.get('markedPoint');
+    const linearApproxFn = h(fn, markedPoint, derivativeFn);
 
-  //   return transform;
-  // }),
+    return linearApproxFn;
+  }),
+
+  markedPointTex: Ember.computed('markedPoint', function() {
+    const { x, y } = this.get('markedPoint');
+    const markedPointTex = `\\left( ${x},\\ ${y} \\right)`;
+
+    return markedPointTex;
+  }),
 
   init() {
     this._super(...arguments);
