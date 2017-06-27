@@ -60,8 +60,8 @@ export function leftMult([[a, b], [c, d]]) {
   }
 }
 
-export function mtxToTex([[a, b], [c, d]]) {
-  return `\\begin{pmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{pmatrix}`;
+export function mtxToTex([[a, b], [c, d]], precision=1) {
+  return `\\begin{pmatrix} ${a.toFixed(precision)} & ${b.toFixed(precision)} \\\\ ${c.toFixed(precision)} & ${d.toFixed(precision)} \\end{pmatrix}`;
 }
 
 

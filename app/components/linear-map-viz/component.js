@@ -8,9 +8,13 @@ export default Ember.Component.extend({
   isTransformed: false,
   controlsOpen: false,
   identity: x => x,
-  markedPoint: new Point(1, 1),
+  markedPoint: null,
   availableTransforms: TRANSFORMS,
   selectedTransform: TRANSFORMS[0],
+  selectingPoint: false,
+  xExtent: null,
+  yExtent: null,
+  shouldAnimate: true,
 
   linearApproxFn: Ember.computed('selectedTransform', 'markedPoint', function() {
     const { fn, derivativeFn } = this.get('selectedTransform');
@@ -39,12 +43,48 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    this.set('gridLines', gridLines({ xExtent: [-2, 2], yExtent: [-2, 2], resolution: 10 }));
+    const xExtent = [-2, 2];
+    const yExtent = [-2, 2];
+
+    this.setProperties({
+      xExtent,
+      yExtent,
+      gridLines: gridLines({ xExtent, yExtent }),
+      markedPoint: new Point(1, 1)
+    });
   },
 
   actions: {
     toggle(prop) {
       this.toggleProperty(prop);
+    },
+
+    toggleTransform() {
+      if (this.get('isTransformed')) {
+        this.set('isTransformed', false);
+      } else {
+        this.set('isTransformed', true);
+        this.set('controlsOpen', false);
+      }
+    },
+
+    startPointSelection() {
+      this.setProperties({
+        selectingPoint: true,
+        controlsOpen: false,
+        shouldAnimate: false,
+        isTransformed: false
+      });
+    },
+
+    selectPoint(markedPoint) {
+      this.setProperties({
+        selectingPoint: false,
+        controlsOpen: true,
+        markedPoint
+      });
+
+      Ember.run.next(() => this.set('shouldAnimate', true));
     }
   }
 });

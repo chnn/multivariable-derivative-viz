@@ -41,6 +41,7 @@ $concrete: #95a5a6;
   position: absolute;
   right: 20px;
   top: 65px;
+  width: 275px;
   padding: 20px 25px;
   background: white;
   border: 1px solid lightgray;
@@ -59,7 +60,7 @@ $concrete: #95a5a6;
 
   .ember-power-select-trigger {
     line-height: 1;
-    width: 240px;
+    width: 251px;
     height: 100px;
   }
 
@@ -69,16 +70,27 @@ $concrete: #95a5a6;
     justify-content: center;
     height: 100%;
   }
+
+  .selected-point-container {
+    display: flex;
+    align-items: center;
+
+    button {
+      margin-left: 15px;
+    }
+  }
 }
 
-.grid-plot {
+.grid-plot, .point-selector {
   width: 40%;
   height: 40%;
-  overflow: visible;
   position: absolute;
   top: 30%;
   left: 30%;
-  padding: 10px;
+}
+
+.grid-plot {
+  overflow: visible;
 }
 
 .grid-plot.derivative {
@@ -93,3 +105,4 @@ $concrete: #95a5a6;
     fill: $carrot;
   }
 }
+
