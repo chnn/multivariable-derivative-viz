@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { Point, gridLines, h } from '../../utils/math';
+import { Point, gridLines, h, mtxToTex } from '../../utils/math';
 import TRANSFORMS from '../../utils/transforms';
 
 export default Ember.Component.extend({
@@ -25,6 +25,15 @@ export default Ember.Component.extend({
     const markedPointTex = `\\left( ${x},\\ ${y} \\right)`;
 
     return markedPointTex;
+  }),
+
+  derivativeMatrixTex: Ember.computed('selectedTransform', 'markedPoint', function() {
+    const { derivativeFn } = this.get('selectedTransform');
+    const markedPoint = this.get('markedPoint');
+    const derivativeMatrix = derivativeFn(markedPoint);
+    const derivativeMatrixTex = mtxToTex(derivativeMatrix);
+
+    return derivativeMatrixTex;
   }),
 
   init() {

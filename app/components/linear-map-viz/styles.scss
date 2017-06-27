@@ -41,16 +41,20 @@ $concrete: #95a5a6;
   position: absolute;
   right: 20px;
   top: 65px;
-  padding: 20px 25px 30px 25px;
+  padding: 20px 25px;
   background: white;
   border: 1px solid lightgray;
   box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
   border-radius: 3px;
 
   h3 {
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 10px;
     font-size: 16px;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   .ember-power-select-trigger {
