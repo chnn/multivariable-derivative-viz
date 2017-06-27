@@ -18,5 +18,15 @@ export default [
       return [[0, 2 * y], [2 * x, 0]];
     },
     fnTex: 'f(x,y) = (y^2,\\ x^2)'
-  }
+  },
+  {
+    key: 2,
+    fn: ({ x, y }) => {
+      return { x: 2 * x + y, y: 2 * y };
+    },
+    derivativeFn: () => {
+      return [[2, 1], [0, 2]];
+    },
+    fnTex: 'f(x,y) = (2x + y,\\ 2y)'
+  },
 ];

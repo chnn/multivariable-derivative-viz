@@ -1,10 +1,15 @@
 // More colors at http://flatuicolors.com/
 $peter-river: #3498db;
 $belize-hole: #2980b9;
+$wisteria: #8e44ad;
+$amethyst: #9b59b6;
+$alizarin: #e74c3c;
+$emerald: #2ecc71;
 $carrot: #e67e22;
 $clouds: #ecf0f1;
 $silver: #bdc3c7;
 $concrete: #95a5a6;
+$midnight-blue: #2c3e50;
 
 & {
   width: 100%;
@@ -47,9 +52,10 @@ $concrete: #95a5a6;
   border: 1px solid lightgray;
   box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
   border-radius: 3px;
+  color: $midnight-blue;
 
   h3 {
-    margin-top: 20px;
+    margin-top: 25px;
     margin-bottom: 10px;
     font-size: 16px;
 
@@ -91,6 +97,14 @@ $concrete: #95a5a6;
 
 .grid-plot {
   overflow: visible;
+
+  .grid-line {
+    stroke: $midnight-blue;
+  }
+
+  .grid-point {
+    fill: $midnight-blue;
+  }
 }
 
 .grid-plot.derivative {
@@ -98,11 +112,11 @@ $concrete: #95a5a6;
   margin-top: 2px;
 
   .grid-line {
-    stroke: $carrot;
+    stroke: $emerald;
   }
 
   .grid-point {
-    fill: $carrot;
+    fill: $emerald;
   }
 }
 
