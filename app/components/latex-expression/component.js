@@ -5,7 +5,7 @@ const LatexExpressionComponent = Ember.Component.extend({
   classNames: ['latex-expression'],
 
   expression: '',
-  displayMode: true,
+  displayMode: false,
 
   didInsertElement() {
     this.renderTex();

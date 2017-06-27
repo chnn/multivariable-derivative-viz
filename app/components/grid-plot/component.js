@@ -8,11 +8,12 @@ import { line } from 'd3-shape';
 const TRANSITION_MS = 2000;
 
 export default Ember.Component.extend({
-  classNames: ['lines-plot'],
+  classNames: ['grid-plot'],
   tagName: 'svg',
 
   lines: null,
   transform: null,
+  markedPoint: null,
 
   height: 400,
   width: 600,
@@ -64,7 +65,10 @@ export default Ember.Component.extend({
 
   draw({ animate = true } = {}) {
     const lineData = this.get('lines');
+    const markedPoint = this.get('markedPoint');
     const transform = this.get('transform');
+    const xScale = this.get('xScale');
+    const yScale = this.get('yScale');
     const pathGenerator = this.get('pathGenerator');
 
     let lines = select(this.element)
@@ -78,10 +82,27 @@ export default Ember.Component.extend({
       .classed('grid-line', true)
       .merge(lines);
 
+    let points = select(this.element)
+      .selectAll('.grid-point')
+      .data([markedPoint], d => d.toString());
+
+    points.exit().remove();
+    
+    points = points.enter()
+      .append('circle')
+      .classed('grid-point', true)
+      .attr('r', 3)
+      .merge(points);
+
     if (animate) {
       lines = lines.transition().duration(TRANSITION_MS);
+      points = points.transition().duration(TRANSITION_MS);
     }
 
     lines.attr('d', d => pathGenerator(d.discretize().map(transform)))
+
+    points
+      .attr('cx', d => xScale(transform(d).x))
+      .attr('cy', d => yScale(transform(d).y));
   },
 });

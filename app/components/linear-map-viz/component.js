@@ -1,76 +1,55 @@
 import Ember from 'ember';
-import { gridLines } from '../../utils/geometry';
+import { Point, gridLines, leftMult, h } from '../../utils/math';
+
+const f = ({ x, y }) => {
+  return { x: ((x * x * x) + (y * y * y)) / 4, y: ((x * x * x) / 3) - y };
+};
+const a = new Point(1, 1); 
+const derivative = [[3 / 4, 3 / 4], [1, -1]]
 
 const TRANSFORMS = [
-  { key: 0, fn: leftMult([[1, 0], [0, 1]]), tex: mtxToTex([[1, 0], [0, 1]]) },
-  { key: 2, fn: leftMult([[2, 0], [0, 2]]), tex: mtxToTex([[2, 0], [0, 2]]) },
-  { key: 3, fn: leftMult([[0.5, 0.5], [0.5, 0.5]]), tex: mtxToTex([[0.5, 0.5], [0.5, 0.5]]) },
-  { key: 4, fn: leftMult([[1, 0.5], [0.5, 1]]), tex: mtxToTex([[1, 0.5], [0.5, 1]]) },
-  { key: 5, fn: leftMult([[0, 1], [1, 0]]), tex: mtxToTex([[0, 1], [1, 0]]) },
   {
-    key: 6,
-    fn: ({ x, y }) => {
-      return { x: x * x * x + (y / 2), y: y * y };
-    },
-    tex: 'f(x,y) = (x^3 + y/2,\\ y^2)'
-  },
-  {
-    key: 7,
-    fn: ({ x, y }) => {
-      return { x: x * x, y: y * y };
-    },
-    tex: 'f(x,y) = (x^2,\\ y^2)'
-  },
-  {
-    key: 8,
-    fn: ({ x, y }) => {
-      return { x: y * y, y: x * x };
-    },
-    tex: 'f(x,y) = (y^2,\\ x^2)'
+    key: 0,
+    fn: leftMult([[1, 0], [0, 1]]),
+    derivativeFn: leftMult([[1, 0], [0, 1]]),
+    derivativePoint: a
   },
   {
     key: 9,
-    fn: ({ x, y }) => {
-      return { x: (x * x * x) + (y * y * y), y: (x * x * x) - y };
-    },
-    tex: '(x^3 + y^3,\\ x^3 - y)',
-  },
-];
+    fn: f,
+    derivativeFn: h(f, a, derivative),
+    derivativePoint: a
 
-function leftMult([[a, b], [c, d]]) {
-  return function({ x, y }) {
-      return { x: (a * x) + (c * y), y: (b * x) + (d * y) };
   }
-}
-
-function mtxToTex([[a, b], [c, d]]) {
-  return `\\begin{pmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{pmatrix}`;
-}
+];
 
 export default Ember.Component.extend({
   classNames: ['linear-map-viz'],
 
-  TRANSFORMS,
+  IDENTITY: TRANSFORMS[0],
+  TRANSFORM: TRANSFORMS[1],
 
-  currentTransformKey: TRANSFORMS[0].key,
-  controlsOpen: false,
+  isTransformed: false,
+  controlsOpen: true,
+
+  // currentTransformKey: TRANSFORMS[0].key,
   
-  currentTransformFn: Ember.computed('currentTransformKey', function() {
-    const currentTransformKey = this.get('currentTransformKey');
-    const fn = TRANSFORMS.find(t => t.key === currentTransformKey).fn;
+  // currentTransform: Ember.computed('currentTransformKey', function() {
+  //   const currentTransformKey = this.get('currentTransformKey');
+  //   const transform = TRANSFORMS.find(t => t.key === currentTransformKey);
 
-    return fn;
-  }),
+  //   return transform;
+  // }),
 
   init() {
     this._super(...arguments);
 
-    this.set('gridLines', gridLines({ xExtent: [-2, 2], yExtent: [-2, 2] }));
+    this.set('gridLines', gridLines({ xExtent: [-2, 2], yExtent: [-2, 2], resolution: 10 }));
   },
 
   actions: {
-    toggleControlsOpen() {
-      this.toggleProperty('controlsOpen');
+    toggle(prop) {
+      this.toggleProperty(prop);
     }
   }
 });

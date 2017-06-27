@@ -53,3 +53,34 @@ function steps(extent, resolution) {
 
   return steps;
 }
+
+export function leftMult([[a, b], [c, d]]) {
+  return function({ x, y }) {
+      return { x: (a * x) + (c * y), y: (b * x) + (d * y) };
+  }
+}
+
+export function mtxToTex([[a, b], [c, d]]) {
+  return `\\begin{pmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{pmatrix}`;
+}
+
+
+/**
+  Given a function $$f$$, a point $$a$$, and the derivative matrix $$Df$$ of
+  the function $$f$$, return a new function given by
+  $$
+  h(x) = f(a) + Df(a)(x - a)^T
+  $$
+  This is a "good linear approximation" of $$f$$ near $$a$$. See p. 116 *Vector
+  Calculus* by Colley for more details.
+*/
+export function h(f, a, df) {
+  const h = function({ x, y }) {
+    return {
+      x: f(a).x + leftMult(df)({ x: x - a.x, y: y - a.y }).x,
+      y: f(a).y + leftMult(df)({ x: x - a.x, y: y - a.y }).y
+    };
+  };
+
+  return h;
+}

@@ -1,5 +1,17 @@
+{{grid-plot
+    lines=gridLines
+    transform=(if isTransformed TRANSFORM.fn IDENTITY.fn)
+    markedPoint=TRANSFORM.derivativePoint
+}}
+{{grid-plot
+    class="derivative"
+    lines=gridLines
+    transform=(if isTransformed TRANSFORM.derivativeFn IDENTITY.fn)
+    markedPoint=TRANSFORM.derivativePoint
+}}
 <div class="controls">
-  <div class="controls-toggle {{if controlsOpen 'open'}}" {{action "toggleControlsOpen"}}>
+  {{!--
+  <div class="controls-toggle {{if controlsOpen 'open'}}" {{action "toggle" "controlsOpen"}}>
     {{fa-icon 'window-maximize'}} Settings
   </div>
   {{#if controlsOpen}}
@@ -8,9 +20,11 @@
         <label class="transform-option">
           {{one-way-radio currentTransformKey option=transform.key update=(action (mut currentTransformKey))}}
           {{latex-expression transform.tex}}
+          {{latex-expression transform.derivativeTex class="derivative"}}
         </label>
       {{/each}}
     </div>
   {{/if}}
+  --}}
+  <button class="btn toggle-transform" {{action "toggle" "isTransformed"}}>{{if isTransformed 'Reset' 'Apply Function'}}</button>
 </div>
-{{grid-plot lines=gridLines transform=currentTransformFn}}
