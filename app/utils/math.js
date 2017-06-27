@@ -56,14 +56,13 @@ function steps(extent, resolution) {
 
 export function leftMult([[a, b], [c, d]]) {
   return function({ x, y }) {
-      return { x: (a * x) + (c * y), y: (b * x) + (d * y) };
+      return { x: (a * x) + (b * y), y: (c * x) + (d * y) };
   }
 }
 
 export function mtxToTex([[a, b], [c, d]], precision=1) {
   return `\\begin{pmatrix} ${a.toFixed(precision)} & ${b.toFixed(precision)} \\\\ ${c.toFixed(precision)} & ${d.toFixed(precision)} \\end{pmatrix}`;
 }
-
 
 /**
   Given a function $$f$$, a point $$a$$, and the derivative matrix $$Df$$ of
