@@ -83,3 +83,61 @@ export function h(f, a, df) {
 
   return h;
 }
+
+class ComplexNumber {
+  constructor(re, im) {
+    this.re = re;
+    this.im = im;
+  }
+}
+
+export function complexMultiply({ re: a, im: b }, { re: c, im: d }) {
+  return ComplexNumber((a * c) - (b * d), (b * c) + (a * d));
+}
+
+export function complexPower(z, x) {
+  let currentPower = 0;
+  let result = 1;
+
+  while (currentPower < x) {
+    result = complexMultiply(z, result);
+    currentPower += 1;
+  }
+
+  return result;
+}
+
+export function complexSum({ re: a, im: b }, { re: c, im: d }) {
+  return ComplexNumber(a + c, b + d);
+}
+
+export function complexSumRange(k0, k1, f) {
+  return range(k0, k1 + 1).reduce((a, c) => complexSum(a, f(c)), ComplexNumber(0, 0));
+}
+
+function weierstraussConstants(g_2, g_3) {
+  const c_2 = g_2 / 20;
+  const c_3 = g_3 / 20;
+
+  return [
+    null,
+    null,
+    c_2,
+    c_3,
+    (1 / 3) * Math.pow(c_2, 2),
+    (1 / 110) * 3 * c_2 * c_3,
+    (1/ 39) * ((2 * Math.pow(c_2, 3)) + (3 * Math.pow(c_3, 2))),
+    (2 / 33) * Math.pow(c_2, 2) * c_3,
+    (5 / 7293) * ((11 * Math.pow(c_2, 4)) + (36 * c_2 * Math.pow(c_3, 2))),
+    (29 / 2717) * ((Math.pow(c_2, 3) * c_3) + (11 * Math.pow(c_3, 2))),
+    (1 / 240669) * ((242 * Math.pow(c_2, 5)) + (1455 * Math.pow(c_2, 2) * Math.pow(c_3, 2)))
+  ];
+}
+
+export function weierstraussP(g_2, g_3) {
+  const cs = weierstraussConstants(g_2, g_3).map(c => ComplexNumber(c, 0));
+
+  return z => (1 / complexPower(z, 2)) + complexSumRange(2, 10, k => complexMultiply(cs[k] * complexPower(z, 2 * k - 2)));
+}
+
+export const weierstraussP12 = weierstraussP(1, 2);
