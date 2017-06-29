@@ -1,13 +1,13 @@
 {{grid-plot
     class="derivative"
     lines=gridLines
-    transform=(if isTransformed linearApproxFn identity)
+    transform=(if isTransformed linearTransformFn identity)
     markedPoint=markedPoint
     shouldAnimate=shouldAnimate
 }}
 {{grid-plot
     lines=gridLines
-    transform=(if isTransformed selectedTransform.fn identity)
+    transform=(if isTransformed transformFn identity)
     markedPoint=markedPoint
     shouldAnimate=shouldAnimate
 }}
@@ -35,14 +35,14 @@
       onchange=(action (mut selectedTransform))
       as |transform|
     }}
-      {{latex-expression transform.fnTex class="selectable-transform"}}
+      {{latex-expression transform.fTex class="selectable-transform"}}
     {{/power-select}}
     <h3>Selected Point</h3>
     <div class="selected-point-container">
       {{latex-expression markedPointTex}}
       <button class="small-button" {{action "startPointSelection"}}>Select New Point</button>
     </div>
-    <h3>Derivative Matrix</h3>
-    {{latex-expression derivativeMatrixTex}}
+    <h3>Linear Approximation</h3>
+    {{latex-expression selectedTransform.fPrimeTex}}
   </div>
 {{/if}}

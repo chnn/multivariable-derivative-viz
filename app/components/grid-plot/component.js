@@ -5,7 +5,7 @@ import { scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
 import { line } from 'd3-shape';
 
-const TRANSITION_MS = 2000;
+const TRANSITION_MS = 3000;
 
 export default Ember.Component.extend({
   classNames: ['grid-plot'],
@@ -42,7 +42,8 @@ export default Ember.Component.extend({
     const yScale = this.get('yScale');
     const pathGenerator = line()
       .x(d => xScale(d.x))
-      .y(d => yScale(d.y));
+      .y(d => yScale(d.y))
+      .defined(d => !isNaN(d.x) && !isNaN(d.y));
 
     return pathGenerator;
   }),
