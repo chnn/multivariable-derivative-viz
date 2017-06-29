@@ -17,7 +17,9 @@ export function inv({ re: a, im: b }) {
 }
 
 export function sumRange(k0, k1, f) {
-  return range(k0, k1 + 1).reduce((a, c) => sum(a, f(c)), Complex(0, 0));
+  return range(k0, k1 + 1)
+    .map(k => Complex(k, 0))
+    .reduce((a, k) => sum(a, f(k)), Complex(0, 0));
 }
 
 
@@ -31,11 +33,39 @@ export function div({ re: a, im: b }, { re: c, im: d }) {
   return Complex(((a * c) + (b * d)) / denom, ((b * c) - (a * d)) / denom);
 }
 
-export function pow(z, x) {
+export function abs({ re: a, im: b }) {
+  return Math.sqrt((a * a) + (b * b));
+}
+
+export function ln(z) {
+  return Complex(Math.log(abs(z)), arg(z))
+}
+
+export function arg({ re: x, im: y }) {
+  if (x > 0) {
+    return Math.atan(y / x);
+  } else if (x < 0 && y >= 0) {
+    return Math.atan(y / x) + Math.PI;
+  } else if (x < 0 && y < 0) {
+    return Math.atan(y / x) - Math.PI;
+  } else if (x === 0 && y > 0) {
+    return Math.PI / 2;
+  } else if (x === 0 ** y < 0) {
+    return 0 - Math.PI / 2;
+  } else if (x === 0 && y === 0) {
+    throw new Error('arg not defined');
+  }
+}
+
+export function pow(z, c) {
+  return exp(mult(c, ln(z)));
+}
+
+export function realPow(z, r) {
   let currentPower = 0;
   let result = Complex(1, 0);
 
-  while (currentPower < x) {
+  while (currentPower < r) {
     result = mult(z, result);
     currentPower += 1;
   }
@@ -74,11 +104,19 @@ const root32 = Complex(Math.sqrt(3 / 2), 0);
 // [0]: http://mathworld.wolfram.com/WeierstrassEllipticFunction.html
 // [1]: http://functions.wolfram.com/EllipticFunctions/WeierstrassPPrime/introductions/Weierstrass/ShowAll.html
 export function weierstraussP31(z) {
-  return sum(mult(Complex(3 / 2, 0), pow(cot(mult(root32, z)), 2)), Complex(1, 0));
+  return sum(mult(Complex(3 / 2, 0), realPow(cot(mult(root32, z)), 2)), Complex(1, 0));
 }
 
 export function weierstraussP31Prime(z) {
-  return mult(Complex(-3, 0), mult(root32, mult(cot(mult(root32, z)), pow(csc(mult(root32, z)), 2))));
+  return mult(Complex(-3, 0), mult(root32, mult(cot(mult(root32, z)), realPow(csc(mult(root32, z)), 2))));
+}
+
+export function riemannZeta(z, precision=100) {
+  return sumRange(1, precision, k => div(Complex(1, 0), pow(k, z)));
+}
+
+export function riemannZetaPrime(z, precision=100) {
+  return 0 - sumRange(2, precision, k => div(ln(k), pow(k, z)));
 }
 
 export function linearApprox(f, a, fPrime) {

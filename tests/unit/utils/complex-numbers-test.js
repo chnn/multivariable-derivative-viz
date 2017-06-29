@@ -6,11 +6,14 @@ import {
   csc,
   cot,
   exp,
+  ln,
   mult,
   div,
+  arg,
   pow,
   weierstraussP31,
-  weierstraussP31Prime
+  weierstraussP31Prime,
+  riemannZeta
 } from '../../../utils/complex-numbers';
 
 module('Unit | Utility | complex-numbers');
@@ -50,15 +53,29 @@ test('cot', function(assert) {
   assert.ok(complexApproxEqual(cot(Complex(2, 2)), Complex(-0.0270655, -0.975969)));
 });
 
+test('arg', function(assert) {
+  assert.equal(arg(Complex(2, 3)).toFixed(3), (0.982794).toFixed(3));
+});
+
+test('ln', function(assert) {
+  assert.ok(complexApproxEqual(ln(Complex(2, 3)), Complex(1.28247, 0.982794)));
+});
+
 test('pow', function(assert) {
-  assert.deepEqual(pow(Complex(11, 12), 2), Complex(-23, 264));
-  assert.deepEqual(pow(Complex(11, 12), 3), Complex(-3421, 2628));
+  assert.ok(complexApproxEqual(pow(Complex(2,3), Complex(4,5)), Complex(-0.753046, -0.986429)));
 });
 
 test('weierstraussP31', function(assert) {
- assert.ok(complexApproxEqual(weierstraussP31(Complex(1, 1)), Complex(-0.12226, -0.2523)))
+ assert.ok(complexApproxEqual(weierstraussP31(Complex(1, 1)), Complex(-0.12226, -0.2523)));
 });
 
 test('weierstraussP31Prime', function(assert) {
- assert.ok(complexApproxEqual(weierstraussP31Prime(Complex(1, 1)), Complex(0.44847502198125844, 0.8650268881957414)))
+ assert.ok(complexApproxEqual(weierstraussP31Prime(Complex(1, 1)), Complex(0.44847502198125844, 0.8650268881957414)));
+});
+
+test('riemannZeta', function(assert) {
+  const result = riemannZeta(Complex(2,3));
+  const expected = Complex(0.798022, -0.113744);
+
+  assert.ok(complexApproxEqual(result, expected));
 });
