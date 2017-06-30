@@ -1,4 +1,5 @@
 import { leftMult } from './math';
+import { weierstrassP1i, weierstrassP1iPrime } from './weierstrass-pe';
 import {
   Complex,
   weierstraussP31,
@@ -59,6 +60,14 @@ export default [
     fPrime: weierstraussP31Prime,
     fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
     fPrimeTex: 'h(z) = f(a) + f\'(a) (z - a)',
+    domain: 'complex'
+  },
+  {
+    key: 7,
+    f: weierstrassP1i,
+    fPrime: weierstrassP1iPrime,
+    fTex: 'f(z) = \\wp(z |\\ 1 / 2, i / 2)',
+    fPrimeTex: '',
     domain: 'complex'
   },
   {
