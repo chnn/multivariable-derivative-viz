@@ -45,8 +45,10 @@
       {{latex-expression markedPointTex}}
       <button class="small-button" {{action "startPointSelection"}}>Select New Point</button>
     </div>
-    <h3>Linear Approximation</h3>
-    {{latex-expression selectedTransform.fPrimeTex displayMode=true}}
+    {{#if selectedTransform.fPrimeTex}}
+      <h3>Derivative</h3>
+      {{latex-expression selectedTransform.fPrimeTex displayMode=true}}
+    {{/if}}
   </div>
 {{/if}}
 {{#if aboutOpen}}

@@ -30,7 +30,7 @@ export default [
       return leftMult([[(3 * x * x) / 4, (3 * y * y) / 4], [x * x, -1]]);
     },
     fTex: 'f(x,y) = \\left(\\frac{x^3 + y^3}{4},\\ \\frac{x^3}{3} - y\\right)',
-    fPrimeTex: '',
+    fPrimeTex: '\\begin{pmatrix} 3x^2 / 4 & 3y^2 / 4 \\\\[0.5em] x^2 & -1 \\end{pmatrix}',
     domain: 'real'
   },
   {
@@ -39,7 +39,7 @@ export default [
       return leftMult([[0, 2 * y], [2 * x, 0]]);
     },
     fTex: 'f(x,y) = (y^2,\\ x^2)',
-    fPrimeTex: '',
+    fPrimeTex: '\\begin{pmatrix} 0 & 2y \\\\[0.5em] 2x & 0 \\end{pmatrix}',
     domain: 'real',
   },
   {
@@ -48,21 +48,21 @@ export default [
       return leftMult([[2, 1], [0, 2]]);
     },
     fTex: 'f(x,y) = (2x + y,\\ 2y)',
-    fPrimeTex: '',
+    fPrimeTex: '\\begin{pmatrix} 2 & 1 \\\\[0.5em] 0 & 2 \\end{pmatrix}',
     domain: 'real'
   },
   {
     f: weierstraussP31,
     fPrime: weierstraussP31Prime,
     fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
-    fPrimeTex: 'h(z) = f(a) + f\'(a) (z - a)',
+    // fPrimeTex: 'h(z) = f(a) + f\'(a) (z - a)',
     domain: 'complex'
   },
   {
     f: weierstrassP1i,
     fPrime: weierstrassP1iPrime,
     fTex: 'f(z) = \\wp(z |\\ 1 / 2, i / 2)',
-    fPrimeTex: '',
+    // fPrimeTex: '',
     domain: 'complex'
   },
   {
