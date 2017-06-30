@@ -25,7 +25,6 @@ function f2({ x, y }) {
 
 export default [
   {
-    key: 0,
     f: f0,
     fPrime({ x, y }) {
       return leftMult([[(3 * x * x) / 4, (3 * y * y) / 4], [x * x, -1]]);
@@ -35,7 +34,6 @@ export default [
     domain: 'real'
   },
   {
-    key: 1,
     f: f1,
     fPrime({ x, y }) {
       return leftMult([[0, 2 * y], [2 * x, 0]]);
@@ -45,7 +43,6 @@ export default [
     domain: 'real',
   },
   {
-    key: 2,
     f: f2, 
     fPrime() {
       return leftMult([[2, 1], [0, 2]]);
@@ -55,7 +52,6 @@ export default [
     domain: 'real'
   },
   {
-    key: 3,
     f: weierstraussP31,
     fPrime: weierstraussP31Prime,
     fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
@@ -63,7 +59,6 @@ export default [
     domain: 'complex'
   },
   {
-    key: 7,
     f: weierstrassP1i,
     fPrime: weierstrassP1iPrime,
     fTex: 'f(z) = \\wp(z |\\ 1 / 2, i / 2)',
@@ -71,7 +66,6 @@ export default [
     domain: 'complex'
   },
   {
-    key: 4,
     f: exp,
     fPrime: exp,
     fTex: 'f(z) = e^z',
@@ -79,7 +73,6 @@ export default [
     domain: 'complex'
   },
   {
-    key: 5,
     f(z) {
       return realPow(z, 2);
     },
@@ -91,7 +84,6 @@ export default [
     domain: 'complex'
   },
   {
-    key: 6,
     f: riemannZeta,
     fPrime: riemannZetaPrime,
     fTex: '\\zeta(z) = \\sum_{k = 1}^\\infty \\frac{1}{k^z}',
