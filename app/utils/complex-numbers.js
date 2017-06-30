@@ -116,7 +116,7 @@ export function riemannZeta(z, precision=100) {
 }
 
 export function riemannZetaPrime(z, precision=100) {
-  return 0 - sumRange(2, precision, k => div(ln(k), pow(k, z)));
+  return sum(Complex(0, 0), inv(sumRange(2, precision, k => div(ln(k), pow(k, z)))));
 }
 
 export function linearApprox(f, a, fPrime) {
