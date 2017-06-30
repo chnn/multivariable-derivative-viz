@@ -3,16 +3,16 @@ import { range } from 'd3-array';
 export function Complex(re, im) {
   // Not using a class so we can avoid using the annoyingly-verbose `new` keyword
   // on every instantiation
-  return { re, im };
+  return [re, im];
 }
 
 const i = Complex(0, 1);
 
-export function sum({ re: a, im: b }, { re: c, im: d }) {
+export function sum([a, b], [c, d]) {
   return Complex(a + c, b + d);
 }
 
-export function inv({ re: a, im: b }) {
+export function inv([a, b]) {
   return Complex(0 - a, 0 - b);
 }
 
@@ -23,17 +23,17 @@ export function sumRange(k0, k1, f) {
 }
 
 
-export function mult({ re: a, im: b }, { re: c, im: d }) {
+export function mult([a, b], [c, d]) {
   return Complex((a * c) - (b * d), (b * c) + (a * d));
 }
 
-export function div({ re: a, im: b }, { re: c, im: d }) {
+export function div([a, b], [c, d]) {
   const denom = (c * c) + (d * d);
 
   return Complex(((a * c) + (b * d)) / denom, ((b * c) - (a * d)) / denom);
 }
 
-export function abs({ re: a, im: b }) {
+export function abs([a, b]) {
   return Math.sqrt((a * a) + (b * b));
 }
 
@@ -41,18 +41,18 @@ export function ln(z) {
   return Complex(Math.log(abs(z)), arg(z))
 }
 
-export function arg({ re: x, im: y }) {
-  if (x > 0) {
-    return Math.atan(y / x);
-  } else if (x < 0 && y >= 0) {
-    return Math.atan(y / x) + Math.PI;
-  } else if (x < 0 && y < 0) {
-    return Math.atan(y / x) - Math.PI;
-  } else if (x === 0 && y > 0) {
+export function arg([a, b]) {
+  if (a > 0) {
+    return Math.atan(b / a);
+  } else if (a < 0 && b >= 0) {
+    return Math.atan(b / a) + Math.PI;
+  } else if (a < 0 && b < 0) {
+    return Math.atan(b / a) - Math.PI;
+  } else if (a === 0 && b > 0) {
     return Math.PI / 2;
-  } else if (x === 0 ** y < 0) {
+  } else if (a === 0 ** b < 0) {
     return 0 - Math.PI / 2;
-  } else if (x === 0 && y === 0) {
+  } else if (a === 0 && b === 0) {
     throw new Error('arg not defined');
   }
 }
@@ -73,7 +73,7 @@ export function realPow(z, r) {
   return result;
 }
 
-export function exp({ re: a, im: b }) {
+export function exp([a, b]) {
   return mult(Complex(Math.exp(a), 0), Complex(Math.cos(b), Math.sin(b)));
 }
 

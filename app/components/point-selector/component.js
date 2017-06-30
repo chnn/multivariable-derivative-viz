@@ -1,7 +1,5 @@
 import Ember from 'ember';
 import { scaleLinear } from 'd3-scale';
-import { Point } from '../../utils/math';
-
 
 export default Ember.Component.extend({
   classNames: ['point-selector'],
@@ -68,7 +66,7 @@ export default Ember.Component.extend({
   click() {
     const { x, y }  = this.get('invertedPosition'); 
 
-    this.attrs.onSelect(new Point(Number(x.toFixed(1)), Number(y.toFixed(1))));
+    this.attrs.onSelect([Number(x.toFixed(1)), Number(y.toFixed(1))]);
   },
 
   init() {
@@ -78,6 +76,6 @@ export default Ember.Component.extend({
     const yScale = this.get('yScale');
     const initialPoint = this.get('initialPoint');
 
-    this.set('position', { x: xScale(initialPoint.x), y: yScale(initialPoint.y) });
+    this.set('position', { x: xScale(initialPoint[0]), y: yScale(initialPoint[1]) });
   }
 });

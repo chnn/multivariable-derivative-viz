@@ -7,7 +7,7 @@
 }}
 {{grid-plot
     lines=gridLines
-    transform=(if isTransformed transformFn identity)
+    transform=(if isTransformed selectedTransform.f identity)
     markedPoint=markedPoint
     shouldAnimate=shouldAnimate
 }}

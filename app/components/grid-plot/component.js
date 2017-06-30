@@ -22,7 +22,7 @@ export default Ember.Component.extend({
   xScale: Ember.computed('lines', 'width', function() {
     const lines = this.get('lines');
     const width = this.get('width');
-    const domain = extent((lines.map(l => l.head.x)).concat(lines.map(l => l.tail.x)));
+    const domain = extent((lines.map(l => l.head[0])).concat(lines.map(l => l.tail[0])));
     const xScale = scaleLinear().domain(domain).range([0, width]);
 
     return xScale;
@@ -31,7 +31,7 @@ export default Ember.Component.extend({
   yScale: Ember.computed('lines', 'height', function() {
     const lines = this.get('lines');
     const height = this.get('height');
-    const domain = extent((lines.map(l => l.head.y)).concat(lines.map(l => l.tail.y)));
+    const domain = extent((lines.map(l => l.head[1])).concat(lines.map(l => l.tail[1])));
     const xScale = scaleLinear().domain(domain).range([height, 0]);
 
     return xScale;
@@ -41,9 +41,9 @@ export default Ember.Component.extend({
     const xScale = this.get('xScale');
     const yScale = this.get('yScale');
     const pathGenerator = line()
-      .x(d => xScale(d.x))
-      .y(d => yScale(d.y))
-      .defined(d => !isNaN(d.x) && !isNaN(d.y));
+      .x(d => xScale(d[0]))
+      .y(d => yScale(d[1]))
+      .defined(d => !isNaN(d[0]) && !isNaN(d[1]));
 
     return pathGenerator;
   }),
@@ -105,7 +105,7 @@ export default Ember.Component.extend({
     lines.attr('d', d => pathGenerator(d.discretize().map(transform)))
 
     points
-      .attr('cx', d => xScale(transform(d).x))
-      .attr('cy', d => yScale(transform(d).y));
+      .attr('cx', d => xScale(transform(d)[0]))
+      .attr('cy', d => yScale(transform(d)[1]));
   },
 });

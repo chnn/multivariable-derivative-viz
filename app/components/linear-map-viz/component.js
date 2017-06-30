@@ -1,10 +1,7 @@
 import Ember from 'ember';
-import { Point, gridLines, linearApprox } from '../../utils/math';
+import { gridLines, linearApprox } from '../../utils/math';
 import TRANSFORMS from '../../utils/transforms';
-import {
-  Complex,
-  linearApprox as complexLinearApprox
-} from '../../utils/complex-numbers';
+import { linearApprox as complexLinearApprox } from '../../utils/complex-numbers';
 
 export default Ember.Component.extend({
   classNames: ['linear-map-viz'],
@@ -20,40 +17,19 @@ export default Ember.Component.extend({
   yExtent: null,
   shouldAnimate: true,
 
-  transformFn: Ember.computed('selectedTransform', function() {
-    const { f, domain } = this.get('selectedTransform');
-
-    if (domain === 'complex') {
-      return ({ x, y }) => {
-        const { re, im } = f(Complex(x, y));
-
-        return { x: re, y: im };
-      }
-    } else if (domain === 'real') {
-      return f;
-    }
-  }),
-
   linearTransformFn: Ember.computed('selectedTransform', 'markedPoint', function() {
     const { f, fPrime, domain } = this.get('selectedTransform');
     const markedPoint = this.get('markedPoint');
 
     if (domain === 'complex') {
-      const a = Complex(markedPoint.x, markedPoint.y);
-      const h = complexLinearApprox(f, a, fPrime);
-
-      return ({ x, y }) => {
-        const { re, im } = h(Complex(x, y));
-
-        return { x: re, y: im };
-      };
+      return complexLinearApprox(f, markedPoint, fPrime);
     } else if (domain === 'real') {
       return linearApprox(f, markedPoint, fPrime);
     }
   }),
 
   markedPointTex: Ember.computed('markedPoint', function() {
-    const { x, y } = this.get('markedPoint');
+    const [x, y] = this.get('markedPoint');
     const markedPointTex = `a = \\left( ${x},\\ ${y} \\right)`;
 
     return markedPointTex;
@@ -69,7 +45,7 @@ export default Ember.Component.extend({
       xExtent,
       yExtent,
       gridLines: gridLines({ xExtent, yExtent }),
-      markedPoint: new Point(1.8, 1.4)
+      markedPoint: [1.8, 1.4]
     });
   },
 

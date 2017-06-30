@@ -11,22 +11,22 @@ import {
   mult
 } from './complex-numbers';
 
-function f0({x, y}) {
-  return { x: ((x * x * x) + (y * y * y)) / 4, y: ((x * x * x) / 3) - y };
+function f0([x, y]) {
+  return [((x * x * x) + (y * y * y)) / 4, ((x * x * x) / 3) - y];
 }
 
-function f1({ x, y }) {
-  return { x: y * y, y: x * x };
+function f1([x, y]) {
+  return [y * y, x * x];
 }
 
-function f2({ x, y }) {
-  return { x: 2 * x + y, y: 2 * y };
+function f2([x, y]) {
+  return [2 * x + y, 2 * y];
 }
 
 export default [
   {
     f: f0,
-    fPrime({ x, y }) {
+    fPrime([x, y]) {
       return leftMult([[(3 * x * x) / 4, (3 * y * y) / 4], [x * x, -1]]);
     },
     fTex: 'f(x,y) = \\left(\\frac{x^3 + y^3}{4},\\ \\frac{x^3}{3} - y\\right)',
@@ -35,7 +35,7 @@ export default [
   },
   {
     f: f1,
-    fPrime({ x, y }) {
+    fPrime([x, y]) {
       return leftMult([[0, 2 * y], [2 * x, 0]]);
     },
     fTex: 'f(x,y) = (y^2,\\ x^2)',
