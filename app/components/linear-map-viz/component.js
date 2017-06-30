@@ -8,6 +8,7 @@ export default Ember.Component.extend({
 
   isTransformed: false,
   controlsOpen: false,
+  aboutOpen: false,
   identity: x => x,
   markedPoint: null,
   availableTransforms: TRANSFORMS,
@@ -50,15 +51,15 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    toggle(prop) {
-      this.toggleProperty(prop);
-    },
-
     toggleTransform() {
       if (this.get('isTransformed')) {
         this.set('isTransformed', false);
       } else {
-        this.setProperties({ isTransformed: true, controlsOpen: false });
+        this.setProperties({
+          isTransformed: true,
+          controlsOpen: false,
+          aboutOpen: false
+        });
       }
     },
 
@@ -79,6 +80,16 @@ export default Ember.Component.extend({
       });
 
       Ember.run.next(() => this.set('shouldAnimate', true));
+    },
+
+    toggleAboutOpen() {
+      this.toggleProperty('aboutOpen');
+      this.set('controlsOpen', false);
+    },
+
+    toggleControlsOpen() {
+      this.toggleProperty('controlsOpen');
+      this.set('aboutOpen', false);
     }
   }
 });

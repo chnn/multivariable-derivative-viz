@@ -20,10 +20,13 @@
   }}
 {{/if}}
 <button class="button toggle-transform" {{action "toggleTransform"}}>
-  {{if isTransformed 'Reset' 'Apply Transform'}}
+  {{if isTransformed 'Reset' 'Apply Function'}}
 </button>
-<div class="controls-toggle {{if controlsOpen 'open'}}" {{action "toggle" "controlsOpen"}}>
-  {{fa-icon 'cog' size=2}} Details
+<div class="controls-toggle {{if controlsOpen 'open'}}" {{action "toggleControlsOpen"}}>
+  {{fa-icon 'cog' size=2}} <span class="toggle-label">Settings</span>
+</div>
+<div class="about-toggle {{if aboutOpen 'open'}}" {{action "toggleAboutOpen"}}>
+  {{fa-icon 'question-circle' size=2}} <span class="toggle-label">About</span>
 </div>
 {{#if controlsOpen}}
   <div class="controls">
@@ -44,5 +47,10 @@
     </div>
     <h3>Linear Approximation</h3>
     {{latex-expression selectedTransform.fPrimeTex displayMode=true}}
+  </div>
+{{/if}}
+{{#if aboutOpen}}
+  <div class="about">
+    {{about-text}}
   </div>
 {{/if}}

@@ -3,6 +3,7 @@ import katex from 'katex';
 
 const LatexExpressionComponent = Ember.Component.extend({
   classNames: ['latex-expression'],
+  tagName: 'span',
 
   expression: '',
   displayMode: false,

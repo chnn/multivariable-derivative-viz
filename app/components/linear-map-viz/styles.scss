@@ -20,11 +20,11 @@ $midnight-blue: #2c3e50;
   position: absolute;
   left: 20px;
   top: 20px;
+  width: 125px;
 }
 
-.controls-toggle {
+.controls-toggle, .about-toggle {
   position: absolute;
-  right: 20px;
   top: 25px;
   cursor: pointer;
   color: $silver;
@@ -33,7 +33,7 @@ $midnight-blue: #2c3e50;
   display: flex;
   align-items: center;
 
-  &:hover {
+  &:hover, &.open {
     color: $concrete;
   }
 
@@ -42,17 +42,28 @@ $midnight-blue: #2c3e50;
   }
 }
 
-.controls {
+.controls-toggle {
+  left: 170px;
+}
+
+.about-toggle {
+  left: 270px;
+}
+
+.controls, .about {
   position: absolute;
-  right: 110px;
-  top: 20px;
-  width: 275px;
+  top: 65px;
   padding: 20px 25px;
   background: white;
   border: 1px solid lightgray;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 4px 3px 12px 2px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   color: $midnight-blue;
+}
+
+.controls {
+  left: 170px;
+  width: 275px;
 
   h3 {
     margin-top: 25px;
@@ -64,19 +75,6 @@ $midnight-blue: #2c3e50;
     }
   }
 
-  .ember-power-select-trigger {
-    line-height: 1;
-    width: 251px;
-    height: 100px;
-  }
-
-  .ember-power-select-selected-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-
   .selected-point-container {
     display: flex;
     align-items: center;
@@ -85,6 +83,28 @@ $midnight-blue: #2c3e50;
       margin-left: 15px;
     }
   }
+}
+
+.ember-power-select-trigger {
+  line-height: 1;
+  width: 251px;
+  height: 100px;
+}
+
+.ember-power-select-selected-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.about {
+  left: 270px;
+  max-width: 600px;
+}
+
+.green {
+  color: $emerald;
 }
 
 .grid-plot, .point-selector {
@@ -120,3 +140,29 @@ $midnight-blue: #2c3e50;
   }
 }
 
+@media (max-width: 425px) {
+  .toggle-label {
+    display: none;
+  }
+
+  .about-toggle {
+    left: 220px;
+  }
+
+  .controls, .about {
+    left: 20px;
+    right: 20px;
+    width: auto;
+    bottom: 20px;
+    top: 75px;
+    overflow: scroll;
+  }
+
+  .about {
+    font-size: 14px;
+  }
+
+  .ember-power-select-trigger {
+    width: auto;
+  }
+}
