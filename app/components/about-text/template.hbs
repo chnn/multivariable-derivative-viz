@@ -1,9 +1,9 @@
 <p>This program visualizes functions {{latex-expression '\mathbb{R}^2 \to \mathbb{R}^2'}} and {{latex-expression '\mathbb{C} \to \mathbb{C}'}} alongside their derivative.</p>
 
-<p>Initially, a grid of lines is displayed in the domain {{latex-expression '[0,2] \times [0,2]'}}, which is considered either as a subset of {{latex-expression '\mathbb{C}'}} or of {{latex-expression '\mathbb{R}^2'}}. After clicking the <span class="ui-button-reference">Apply Function</span> button, the grid animates between its initial state and the result of applying the selected function.</p>
+<p>Initially, a grid of lines is displayed in the domain {{latex-expression '[0,2] \times [0,2]'}}, which is considered either as a subset of {{latex-expression '\mathbb{R \times R}'}} or of the real-imaginary plane. After clicking the <span class="ui-button-reference">Apply Function</span> button, the grid animates between its initial state and the result of applying the selected function.</p>
 
 <p>Using the derivative of the selected function, the result of a best linear approximation is displayed similarly on the <span class="green">green</span> grid. For a function {{latex-expression 'f : \mathbb{R}^2 \to \mathbb{R}^2'}}, this approximation is given by, 
 {{latex-expression 'h(\mathbf{x}) = f(\mathbf{a}) + Df(\mathbf{a})(\mathbf{x - a})^T' displayMode=true}}
-where {{latex-expression '\mathbf{a} \in \mathbb{R}^2'}} is the point at which the derivative {{latex-expression 'Df'}} is taken. If instead {{latex-expression 'f : \mathbb{C} \to \mathbb{C}'}}, this approximation is given by
+where {{latex-expression '\mathbf{a} \in \mathbb{R}^2'}} is the point at which the derivative matrix {{latex-expression 'Df'}} is computed. If instead {{latex-expression 'f : \mathbb{C} \to \mathbb{C}'}}, this approximation is given by
 {{latex-expression 'h(z) = f(a) + f\'(a)(z - a)' displayMode=true}} with {{latex-expression 'a,\, z \in \mathbb{C}'}}. Different choices of {{latex-expression 'f'}} and {{latex-expression 'a'}} may be selected in the <span class="ui-dialog-reference">{{fa-icon 'cog'}} Settings</span> dialog.
 </p>
