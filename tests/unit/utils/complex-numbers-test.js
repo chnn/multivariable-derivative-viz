@@ -18,7 +18,7 @@ import {
 
 module('Unit | Utility | complex-numbers');
 
-function complexApproxEqual({ re: a, im: b }, { re: c, im: d }, precision=2) {
+function complexApproxEqual([a, b], [c, d], precision=2) {
   const fixed = [a, b, c, d].map(x => x.toFixed(precision));
 
   return fixed[0] === fixed[2] && fixed[1] === fixed[3];
