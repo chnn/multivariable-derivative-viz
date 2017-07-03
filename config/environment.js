@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'linear-map-viz',
+    modulePrefix: 'multivariable-derivative-viz',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',

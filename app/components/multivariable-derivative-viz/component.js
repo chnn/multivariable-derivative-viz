@@ -4,7 +4,7 @@ import TRANSFORMS from '../../utils/transforms';
 import { linearApprox as complexLinearApprox } from '../../utils/complex-numbers';
 
 export default Ember.Component.extend({
-  classNames: ['linear-map-viz'],
+  classNames: ['multivariable-derivative-viz'],
 
   isTransformed: false,
   controlsOpen: false,

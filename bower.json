@@ -1,5 +1,5 @@
 {
-  "name": "linear-map-viz",
+  "name": "multivariable-derivative-viz",
   "dependencies": {
     "katex": "^0.7.1"
   }
