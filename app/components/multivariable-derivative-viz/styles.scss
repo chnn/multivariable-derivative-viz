@@ -85,6 +85,15 @@ $midnight-blue: #2c3e50;
   }
 }
 
+.derivative-toggle {
+  display: block;
+  margin-top: 25px;
+
+  input {
+    margin-left: 0;
+  }
+}
+
 .ember-power-select-trigger {
   line-height: 1;
   width: 251px;

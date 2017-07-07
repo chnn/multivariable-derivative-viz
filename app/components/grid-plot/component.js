@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   lines: null,
   transform: null,
   markedPoint: null,
-  shouldAnimate: true,
+  shouldAnimate: false,
 
   height: 400,
   width: 600,

@@ -55,14 +55,14 @@ export default [
     f: weierstraussP31,
     fPrime: weierstraussP31Prime,
     fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
-    // fPrimeTex: 'h(z) = f(a) + f\'(a) (z - a)',
+    fPrimeTex: '',
     domain: 'complex'
   },
   {
     f: weierstrassP1i,
     fPrime: weierstrassP1iPrime,
     fTex: 'f(z) = \\wp(z |\\ 1 / 2, i / 2)',
-    // fPrimeTex: '',
+    fPrimeTex: '',
     domain: 'complex'
   },
   {

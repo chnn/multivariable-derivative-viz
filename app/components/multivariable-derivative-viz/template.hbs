@@ -1,14 +1,16 @@
-{{grid-plot
-    class="derivative"
-    lines=gridLines
-    transform=(if isTransformed linearTransformFn identity)
-    markedPoint=markedPoint
-    shouldAnimate=shouldAnimate
-}}
+{{#if showDerivative}}
+  {{grid-plot
+      class="derivative"
+      lines=gridLines
+      transform=(if isTransformed linearTransformFn identity)
+      markedPoint=markedPoint
+      shouldAnimate=shouldAnimate
+  }}
+{{/if}}
 {{grid-plot
     lines=gridLines
     transform=(if isTransformed selectedTransform.f identity)
-    markedPoint=markedPoint
+    markedPoint=(if showDerivative markedPoint)
     shouldAnimate=shouldAnimate
 }}
 {{#if selectingPoint}}
@@ -40,19 +42,21 @@
     }}
       {{latex-expression transform.fTex class="selectable-transform"}}
     {{/power-select}}
-    <h3>Selected Point</h3>
-    <div class="selected-point-container">
-      {{latex-expression markedPointTex}}
-      <button class="small-button" {{action "startPointSelection"}}>Select New Point</button>
-    </div>
-    {{#if selectedTransform.fPrimeTex}}
+    <label class="derivative-toggle">
+      {{one-way-checkbox showDerivative update=(action "toggleShowDerivative")}}
+      Show Derivative
+    </label>
+    {{#if showDerivative}}
+      <h3>Selected Point</h3>
+      <div class="selected-point-container">
+        {{latex-expression markedPointTex}}
+        <button class="small-button" {{action "startPointSelection"}}>Select New Point</button>
+      </div>
       <h3>Derivative</h3>
       {{latex-expression selectedTransform.fPrimeTex displayMode=true}}
     {{/if}}
   </div>
 {{/if}}
 {{#if aboutOpen}}
-  <div class="about">
-    {{about-text}}
-  </div>
+  {{about-text class="about"}}
 {{/if}}

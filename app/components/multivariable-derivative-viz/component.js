@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   markedPoint: null,
   availableTransforms: TRANSFORMS,
   selectedTransform: TRANSFORMS[0],
+  showDerivative: false,
   selectingPoint: false,
   xExtent: null,
   yExtent: null,
@@ -76,6 +77,7 @@ export default Ember.Component.extend({
       this.setProperties({
         selectingPoint: false,
         controlsOpen: true,
+        shouldAnimate: false,
         markedPoint
       });
 
@@ -90,6 +92,15 @@ export default Ember.Component.extend({
     toggleControlsOpen() {
       this.toggleProperty('controlsOpen');
       this.set('aboutOpen', false);
+    },
+
+    toggleShowDerivative(showDerivative) {
+      this.setProperties({
+        shouldAnimate: false,
+        showDerivative
+      });
+
+      Ember.run.next(() => this.set('shouldAnimate', true));
     }
   }
 });
