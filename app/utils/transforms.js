@@ -1,11 +1,8 @@
 import { leftMult } from './math';
-import { weierstrassP1i, weierstrassP1iPrime } from './weierstrass-pe';
 import {
   Complex,
   weierstraussP31,
   weierstraussP31Prime,
-  riemannZeta,
-  riemannZetaPrime,
   exp,
   realPow,
   mult
@@ -22,6 +19,11 @@ function f1([x, y]) {
 function f2([x, y]) {
   return [2 * x + y, 2 * y];
 }
+
+const rad = 0.5235988;
+const rotateBy30 = leftMult([[Math.cos(rad), 0 - Math.sin(rad)], [Math.sin(rad), Math.cos(rad)]]);
+const flip = leftMult([[0,1], [1, 0]]);
+const scale = leftMult([[2,0], [0, 2]]);
 
 export default [
   {
@@ -52,17 +54,36 @@ export default [
     domain: 'real'
   },
   {
+    f: rotateBy30, 
+    fPrime() {
+      return rotateBy30;
+    },
+    fTex: 'A = \\begin{pmatrix} \\cos 30 & -\\sin 30 \\\\[0.5em] \\sin 30 & \\cos 30 \\end{pmatrix}',
+    fPrimeTex: '\\begin{pmatrix} \\cos 30 & -\\sin 30 \\\\[0.5em] \\sin 30 & \\cos 30 \\end{pmatrix}',
+    domain: 'real'
+  },
+  {
+    f: flip, 
+    fPrime() {
+      return flip;
+    },
+    fTex: 'A = \\begin{pmatrix} 0 & 1 \\\\ 1 & 0 \\end{pmatrix}',
+    fPrimeTex: '\\begin{pmatrix} 0 & 1 \\\\ 1 & 0 \\end{pmatrix}',
+    domain: 'real'
+  },
+  {
+    f: scale, 
+    fPrime() {
+      return scale;
+    },
+    fTex: 'A = \\begin{pmatrix} 2 & 0 \\\\ 0 & 2 \\end{pmatrix}',
+    fPrimeTex: '\\begin{pmatrix} 2 & 0 \\\\ 0 & 2 \\end{pmatrix}',
+    domain: 'real'
+  },
+  {
     f: weierstraussP31,
     fPrime: weierstraussP31Prime,
     fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
-    fPrimeTex: '',
-    domain: 'complex'
-  },
-  {
-    f: weierstrassP1i,
-    fPrime: weierstrassP1iPrime,
-    fTex: 'f(z) = \\wp(z |\\ 1 / 2, i / 2)',
-    fPrimeTex: '',
     domain: 'complex'
   },
   {
@@ -83,11 +104,4 @@ export default [
     fPrimeTex: 'h(z) = f(a) + 2z(z - a)',
     domain: 'complex'
   },
-  {
-    f: riemannZeta,
-    fPrime: riemannZetaPrime,
-    fTex: '\\zeta(z) = \\sum_{k = 1}^\\infty \\frac{1}{k^z}',
-    fPrimeTex: 'h(z) = \\zeta(a) + \\zeta\'(a) (z - a)',
-    domain: 'complex'
-  }
 ];
