@@ -49,7 +49,7 @@ export default [
     fPrime() {
       return leftMult([[2, 1], [0, 2]]);
     },
-    fTex: 'f(x,y) = (2x + y,\\ 2y)',
+    fTex: 'A = \\begin{pmatrix} 2 & 1 \\\\[0.5em] 0 & 2 \\end{pmatrix}',
     fPrimeTex: '\\begin{pmatrix} 2 & 1 \\\\[0.5em] 0 & 2 \\end{pmatrix}',
     domain: 'real'
   },
@@ -81,9 +81,14 @@ export default [
     domain: 'real'
   },
   {
-    f: weierstraussP31,
-    fPrime: weierstraussP31Prime,
-    fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
+    f(z) {
+      return realPow(z, 2);
+    },
+    fPrime(z) {
+      return mult(Complex(2, 0), z);
+    },
+    fTex: 'f(z) = z^2',
+    fPrimeTex: 'h(z) = f(a) + 2z(z - a)',
     domain: 'complex'
   },
   {
@@ -94,14 +99,9 @@ export default [
     domain: 'complex'
   },
   {
-    f(z) {
-      return realPow(z, 2);
-    },
-    fPrime(z) {
-      return mult(Complex(2, 0), z);
-    },
-    fTex: 'f(z) = z^2',
-    fPrimeTex: 'h(z) = f(a) + 2z(z - a)',
+    f: weierstraussP31,
+    fPrime: weierstraussP31Prime,
+    fTex: 'f(z) = \\wp(z ;\\ 3, 1)',
     domain: 'complex'
   },
 ];
