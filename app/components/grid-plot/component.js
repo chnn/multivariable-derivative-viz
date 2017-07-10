@@ -112,13 +112,9 @@ export default Ember.Component.extend({
         return t => pathGenerator(points.map(homotopy(t)));
       });
     } else if (state === 2) {
-      transition.attr('d', d => {
-        return pathGenerator(d.discretize().map(orthonormalFn));
-      });
+      transition.attr('d', d => pathGenerator(d.discretize().map(orthonormalFn)));
     } else if (state === 3) {
-      transition.attr('d', d => {
-        return pathGenerator(d.discretize().map(linearFn));
-      });
+      transition.attr('d', d => pathGenerator(d.discretize().map(linearFn)));
     }
   },
 });
