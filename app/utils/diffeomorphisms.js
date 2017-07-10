@@ -45,5 +45,9 @@ export function matrixToDiffeoHomotopy(f, t, fPrimeNull) {
     return fPrimeNull;
   }
 
-  return x => div(subtract(f(mult(x, t), f([0, 0]), mult(f([0, 0]), 0 - t))), t);
+  return x => add(div(subtract(f(mult(x, t)), f([0, 0])), t), mult(f([0, 0]), t));
+
+  // Or is it this one?
+  //
+  // return x => div(subtract(f(mult(x, t), f([0, 0]), mult(f([0, 0]), 0 - t))), t);
 }
