@@ -4,17 +4,19 @@ import { transition } from 'd3-transition';  // eslint-disable-line
 import { scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
 import { line } from 'd3-shape';
+import { matrixToDiffeoHomotopy, gramSchmidt } from '../../utils/diffeomorphisms';
+import { transpose, leftMult } from '../../utils/math';
 
 const TRANSITION_MS = 3000;
 
 export default Ember.Component.extend({
   classNames: ['grid-plot'],
   tagName: 'svg',
+  attributeBindings: ['style'],
 
   lines: null,
   transform: null,
-  markedPoint: null,
-  shouldAnimate: false,
+  interpolateTransform: false,
 
   height: 400,
   width: 600,
@@ -48,13 +50,20 @@ export default Ember.Component.extend({
     return pathGenerator;
   }),
 
-  didInsertElement() {
-    this.setProperties({
-      width: this.$().width(),
-      height: this.$().height()
-    });
+  style: Ember.computed('width', 'height', function() {
+    const width = this.get('width');
+    const height = this.get('height');
 
-    this.draw({ animate: false });
+    return Ember.String.htmlSafe(`width: ${width}px; height: ${height}px`);
+  }),
+
+  didInsertElement() {
+    const $parent = this.$().parent();
+    const len = Math.min($parent.width(), $parent.height()) * 0.3;
+
+    this.setProperties({ width: len, height: len });
+
+    this.draw(true);
   },
 
   didReceiveAttrs() {
@@ -65,14 +74,12 @@ export default Ember.Component.extend({
     }
   },
 
-  draw({ animate = this.get('shouldAnimate') } = {}) {
+  draw(firstDraw=false) {
     const lineData = this.get('lines');
-    const markedPoint = this.get('markedPoint');
-    const pointsData = markedPoint ? [markedPoint] : [];
-    const transform = this.get('transform');
-    const xScale = this.get('xScale');
-    const yScale = this.get('yScale');
     const pathGenerator = this.get('pathGenerator');
+    const state = this.get('state');
+    const { f, fPrimeNull } = this.get('transform');
+    const fPrimeNullFn = leftMult(fPrimeNull);
 
     let lines = select(this.element)
       .selectAll('.grid-line')
@@ -85,27 +92,33 @@ export default Ember.Component.extend({
       .classed('grid-line', true)
       .merge(lines);
 
-    let points = select(this.element)
-      .selectAll('.grid-point')
-      .data(pointsData);
+    if (firstDraw) {
+      lines.attr('d', d => pathGenerator(d.discretize().map(f)));
 
-    points.exit().remove();
-    
-    points = points.enter()
-      .append('circle')
-      .classed('grid-point', true)
-      .attr('r', 3)
-      .merge(points);
-
-    if (animate) {
-      lines = lines.transition().duration(TRANSITION_MS);
-      points = points.transition().duration(TRANSITION_MS);
+      return;
     }
 
-    lines.attr('d', d => pathGenerator(d.discretize().map(transform)))
+    const forwardsHomotopy = t => matrixToDiffeoHomotopy(f, t, fPrimeNullFn);
+    const backwardsHomotopy = t => matrixToDiffeoHomotopy(f, 1 - t, fPrimeNullFn);
+    const orthonormalFn = leftMult(transpose(gramSchmidt(transpose(fPrimeNull))));
+    const linearFn = leftMult(fPrimeNull);
+    const transition = lines.transition().duration(TRANSITION_MS);
 
-    points
-      .attr('cx', d => xScale(transform(d)[0]))
-      .attr('cy', d => yScale(transform(d)[1]));
+    if (state === 1 || state === 0) {
+      transition.attrTween('d', d => {
+        const points = d.discretize();
+        const homotopy = state === 0 ? forwardsHomotopy : backwardsHomotopy;
+
+        return t => pathGenerator(points.map(homotopy(t)));
+      });
+    } else if (state === 2) {
+      transition.attr('d', d => {
+        return pathGenerator(d.discretize().map(orthonormalFn));
+      });
+    } else if (state === 3) {
+      transition.attr('d', d => {
+        return pathGenerator(d.discretize().map(linearFn));
+      });
+    }
   },
 });

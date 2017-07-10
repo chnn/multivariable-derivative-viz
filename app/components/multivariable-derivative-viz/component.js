@@ -1,40 +1,38 @@
 import Ember from 'ember';
-import { gridLines, linearApprox } from '../../utils/math';
+import { gridLines } from '../../utils/math';
 import TRANSFORMS from '../../utils/transforms';
-import { linearApprox as complexLinearApprox } from '../../utils/complex-numbers';
 
 export default Ember.Component.extend({
   classNames: ['multivariable-derivative-viz'],
 
-  isTransformed: false,
+  /**
+    An enum type representing which transform is being applied to the grid. The
+    next state can be computed by `(state + 1) % 4`. The possible states are:
+
+        { 
+          0: 'Diff(R^2)',
+          1: 'GL_2(R)',
+          2: 'O(2)',
+          3: 'GL_2(R)'
+        }
+  */
+  state: 0,
   controlsOpen: false,
-  aboutOpen: false,
-  identity: x => x,
-  markedPoint: null,
   availableTransforms: TRANSFORMS,
   selectedTransform: TRANSFORMS[0],
-  showDerivative: false,
-  selectingPoint: false,
   xExtent: null,
   yExtent: null,
-  shouldAnimate: true,
 
-  linearTransformFn: Ember.computed('selectedTransform', 'markedPoint', function() {
-    const { f, fPrime, domain } = this.get('selectedTransform');
-    const markedPoint = this.get('markedPoint');
+  buttonTex: Ember.computed('state', function() {
+    const state = this.get('state');
+    const next = {
+      0: '\\mathrm{GL}_2(\\mathbf{R})',
+      1: '\\mathrm{O}(2)',
+      2: '\\mathrm{GL}_2(\\mathbf{R})',
+      3: '\\mathrm{Diff}(\\mathbf{R}^2)'
+    };
 
-    if (domain === 'complex') {
-      return complexLinearApprox(f, markedPoint, fPrime);
-    } else if (domain === 'real') {
-      return linearApprox(f, markedPoint, fPrime);
-    }
-  }),
-
-  markedPointTex: Ember.computed('markedPoint', function() {
-    const [x, y] = this.get('markedPoint');
-    const markedPointTex = `a = \\left( ${x},\\ ${y} \\right)`;
-
-    return markedPointTex;
+    return next[state];
   }),
 
   init() {
@@ -47,7 +45,6 @@ export default Ember.Component.extend({
       xExtent,
       yExtent,
       gridLines: gridLines({ xExtent, yExtent }),
-      markedPoint: [1.8, 1.4]
     });
   },
 
@@ -59,48 +56,16 @@ export default Ember.Component.extend({
         this.setProperties({
           isTransformed: true,
           controlsOpen: false,
-          aboutOpen: false
         });
       }
     },
 
-    startPointSelection() {
-      this.setProperties({
-        selectingPoint: true,
-        controlsOpen: false,
-        shouldAnimate: false,
-        isTransformed: false
-      });
-    },
-
-    selectPoint(markedPoint) {
-      this.setProperties({
-        selectingPoint: false,
-        controlsOpen: true,
-        shouldAnimate: false,
-        markedPoint
-      });
-
-      Ember.run.next(() => this.set('shouldAnimate', true));
-    },
-
-    toggleAboutOpen() {
-      this.toggleProperty('aboutOpen');
-      this.set('controlsOpen', false);
+    toggleState() {
+      this.set('state', (this.get('state') + 1) % 4);
     },
 
     toggleControlsOpen() {
       this.toggleProperty('controlsOpen');
-      this.set('aboutOpen', false);
-    },
-
-    toggleShowDerivative(showDerivative) {
-      this.setProperties({
-        shouldAnimate: false,
-        showDerivative
-      });
-
-      Ember.run.next(() => this.set('shouldAnimate', true));
     }
   }
 });

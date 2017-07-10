@@ -49,6 +49,10 @@ export function leftMult([[a, b], [c, d]]) {
   }
 }
 
+export function transpose([[a, b], [c, d]]) {
+  return [[a, c], [b, d]];
+}
+
 /**
   Given a function $$f$$, a point $$a$$, and the derivative $$f'$$ of the
   function $$f$$, return a new function $$h$$ given by

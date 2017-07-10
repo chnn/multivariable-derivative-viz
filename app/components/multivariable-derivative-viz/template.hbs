@@ -1,34 +1,13 @@
-{{#if showDerivative}}
-  {{grid-plot
-      class="derivative"
-      lines=gridLines
-      transform=(if isTransformed linearTransformFn identity)
-      markedPoint=markedPoint
-      shouldAnimate=shouldAnimate
-  }}
-{{/if}}
 {{grid-plot
     lines=gridLines
-    transform=(if isTransformed selectedTransform.f identity)
-    markedPoint=(if showDerivative markedPoint)
-    shouldAnimate=shouldAnimate
+    transform=selectedTransform
+    state=state
 }}
-{{#if selectingPoint}}
-  {{point-selector
-      xExtent=xExtent
-      yExtent=yExtent
-      initialPoint=markedPoint
-      onSelect=(action "selectPoint")
-  }}
-{{/if}}
-<button class="button toggle-transform" {{action "toggleTransform"}}>
-  {{if isTransformed 'Reset' 'Apply Function'}}
+<button class="button toggle-transform" {{action "toggleState"}}>
+  Send to {{latex-expression buttonTex}}
 </button>
 <div class="controls-toggle {{if controlsOpen 'open'}}" {{action "toggleControlsOpen"}}>
   {{fa-icon 'cog' size=2}} <span class="toggle-label">Settings</span>
-</div>
-<div class="about-toggle {{if aboutOpen 'open'}}" {{action "toggleAboutOpen"}}>
-  {{fa-icon 'question-circle' size=2}} <span class="toggle-label">About</span>
 </div>
 {{#if controlsOpen}}
   <div class="controls">
@@ -42,23 +21,5 @@
     }}
       {{latex-expression transform.fTex class="selectable-transform"}}
     {{/power-select}}
-    <label class="derivative-toggle">
-      {{one-way-checkbox showDerivative update=(action "toggleShowDerivative")}}
-      Show Derivative
-    </label>
-    {{#if showDerivative}}
-      <h3>Selected Point</h3>
-      <div class="selected-point-container">
-        {{latex-expression markedPointTex}}
-        <button class="small-button" {{action "startPointSelection"}}>Select New Point</button>
-      </div>
-      {{#if selectedTransform.fPrimeTex}}
-        <h3>Derivative</h3>
-        {{latex-expression selectedTransform.fPrimeTex displayMode=true}}
-      {{/if}}
-    {{/if}}
   </div>
-{{/if}}
-{{#if aboutOpen}}
-  {{about-text class="about"}}
 {{/if}}
