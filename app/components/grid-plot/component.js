@@ -7,7 +7,7 @@ import { line } from 'd3-shape';
 import { matrixToDiffeoHomotopy, gramSchmidt } from '../../utils/diffeomorphisms';
 import { transpose, leftMult } from '../../utils/math';
 
-const TRANSITION_MS = 3000;
+const TRANSITION_MS = 1500;
 
 export default Ember.Component.extend({
   classNames: ['grid-plot'],
